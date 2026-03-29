@@ -1,4 +1,6 @@
+import { routes } from '@/core/routes';
 import { Card, Domain } from '@/core/types';
+import Link from 'next/link';
 import React from 'react';
 
 const domainStyles: Record<Domain, string> = {
@@ -13,7 +15,7 @@ const domainStyles: Record<Domain, string> = {
 
 export const CardDisplay = ({ card }: { card: Card }) => {
   return (
-    <div className={`w-64 h-96 border-4 rounded-2xl p-4 shadow-xl flex flex-col justify-between transition-all hover:-translate-y-2 ${domainStyles[card.domain]}`}>
+    <Link href={routes.domain(card.domain)} className={`w-64 h-96 border-4 rounded-2xl p-4 shadow-xl flex flex-col justify-between transition-all hover:-translate-y-2 cursor-pointer ${domainStyles[card.domain]}`}>
       <div className="flex justify-between items-start">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-widest opacity-70">{card.domain}</span>
@@ -51,6 +53,6 @@ export const CardDisplay = ({ card }: { card: Card }) => {
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
