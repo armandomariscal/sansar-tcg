@@ -4,7 +4,26 @@ Un juego de cartas coleccionables (TCG) donde los elementos tradicionales son re
 
 ---
 
-## 🛠️ Tech Stack
+## Arquitectura
+
+Flujo principal de datos:
+
+UI (App Router)
+- `domain/[domain]/page.tsx`
+- `core/domain-mapper.ts` (slug → Domain enum)
+- `core/repository.ts` (contrato)
+- `infrastructure/get-repository.ts` (factory)
+- `infrastructure/sqlite-repository.ts` (implementación)
+- SQLite (`local.db`) o mocks
+
+Principios:
+- Separación dominio / infraestructura
+- Tipado estricto (no strings libres en runtime)
+- Repositorio intercambiable (mock ↔ SQLite)
+
+---
+
+## Tech Stack
 
 * **Framework:** Next.js 16.1.6 (con React 19)
 * **Motor de Render:** Turbopack
@@ -45,7 +64,7 @@ Un juego de cartas coleccionables (TCG) donde los elementos tradicionales son re
 ```
 ---
 
-## 🏗️ Dominios del Juego (Roles)
+## Dominios del Juego (Roles)
 
 El juego se divide en **7 Dominios principales**, cada uno con una identidad visual y rol mecánico específico:
 
@@ -61,7 +80,7 @@ El juego se divide en **7 Dominios principales**, cada uno con una identidad vis
 
 ---
 
-## 📊 Mecánicas Principales
+## Mecánicas Principales
 
 ### Niveles de Seniority
 Las cartas escalan su poder y complejidad según su rango:
@@ -77,7 +96,7 @@ Las cartas escalan su poder y complejidad según su rango:
 
 ---
 
-## 📂 Organización del Código
+## Organización del Código
 
 El proyecto sigue una estructura limpia para separar la lógica de negocio de la interfaz:
 
@@ -88,7 +107,7 @@ El proyecto sigue una estructura limpia para separar la lógica de negocio de la
 
 ---
 
-## 🚀 Guía de Desarrollo
+## Guía de Desarrollo
 
 Para iniciar el entorno de desarrollo local:
 
