@@ -15,7 +15,7 @@ const domainStyles: Record<Domain, string> = {
 
 export const CardDisplay = ({ card }: { card: Card }) => {
   return (
-    <Link href={routes.domain(card.domain)} className={`w-64 h-96 border-4 rounded-2xl p-4 shadow-xl flex flex-col justify-between transition-all hover:-translate-y-2 cursor-pointer ${domainStyles[card.domain]}`}>
+    <Link href={routes.domain(card.domain)} className={`w-60 h-85 border-4 rounded-2xl p-4 shadow-xl flex flex-col justify-between transition-all hover:-translate-y-2 cursor-pointer ${domainStyles[card.domain]}`}>
       <div className="flex justify-between items-start">
         <div>
           <span className="text-[10px] font-bold uppercase tracking-widest opacity-70">{card.domain}</span>
