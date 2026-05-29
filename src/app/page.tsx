@@ -23,10 +23,10 @@ export default async function HomePage() {
         {activeCards.length === 0 ? (
           <div className="text-center p-12 border border-dashed border-neutral-700 rounded-xl">
             <p className="text-neutral-400 mb-2">
-              No se encontraron cartas en la base de datos local.
+              Don't found any cards in the local database.
             </p>
             <p className="text-yellow-500 text-xs font-mono">
-              Recuerda inicializar el entorno visitando /api/seed
+              Remember to initialize the environment using /api/seed
             </p>
           </div>
         ) : (
