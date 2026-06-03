@@ -1,6 +1,8 @@
 # 🃏 Sansar TCG: Software Architecture Game
 
-Un juego de cartas coleccionables (TCG) donde los elementos tradicionales son reemplazados por **Dominios de Ingeniería** y los rangos de poder se definen por el Seniority. Este proyecto funciona como un portafolio técnico avanzado que implementa arquitectura limpia y tipos estrictos.
+🌐 **Language / Idioma:** English | [Leer en Español](./README.es.md)
+
+A Trading Card Game (TCG) where traditional mechanics are replaced by **Engineering Domains** and power rankings are defined by Seniority. This project serves as an advanced technical portfolio implementing clean architecture and strict typing.
 
 ---
 
@@ -14,87 +16,92 @@ Un juego de cartas coleccionables (TCG) donde los elementos tradicionales son re
 ![Execution Mode](<https://img.shields.io/badge/Rendering-Dynamic_SSR_(%C6%92)-FF4F00>)
 ![Quality](https://img.shields.io/badge/Code_Quality-ESLint-4B32C3?logo=eslint&logoColor=white)
 
-* **Next.js (Dynamic SSR):** Renderizado híbrido optimizado. Se utiliza SSR dinámico para garantizar que el estado del tablero, las cartas del usuario y la persistencia en la base de datos se sincronicen en tiempo real sin desajustes de hidratación.
-* **React y Tailwind CSS:** UI declarativa y componentes de alto impacto visual con transiciones fluidas para emular la experiencia física de un juego de cartas de mesa.
-* **TypeScript (Strict Mode):** Tipado ultra-estricto para las mecánicas del juego, asegurando que los flujos de daño, coste de energía y estados de las cartas sean validados en tiempo de compilación.
-* **SQLite (@libsql/client):** Base de datos embebida y ligera para gestionar el inventario, perfiles de jugador y sets de cartas de forma local, simulando un entorno productivo sin sobrecarga de infraestructura.
+- **Next.js (Dynamic SSR):** Optimized hybrid rendering. Dynamic SSR is leveraged to ensure that board state, user cards, and database persistence remain synchronized in real-time without hydration mismatches.
+- **React & Tailwind CSS:** Declarative UI paired with high-impact visual components featuring smooth transitions to emulate the physical experience of a tabletop card game.
+- **TypeScript (Strict Mode):** Ultra-strict typing governing game mechanics, ensuring that damage calculations, energy costs, and card states are fully validated at compile time.
+- **SQLite (@libsql/client):** A lightweight, embedded database utilized to manage inventory, player profiles, and card sets locally, simulating a production environment without infrastructural overhead.
 
-### Dominios del Juego (Roles)
+### Game Domains (Roles)
 
-El set de cartas se segmenta en **7 Dominios principales**, cada uno con una identidad visual única y una especialidad mecánica orientada al producto:
+The card set is segmented into **7 Core Domains**, each featuring a unique visual identity and a product-oriented mechanical specialty:
 
-| Dominio      | Identidad Visual | Especialidad                             |
-| :----------- | :--------------- | :--------------------------------------- |
-| **Quality**  | 🟣 `Púrpura`     | Testing, QA y estabilidad del entorno.   |
-| **Systems**  | 🔵 `Azul Oscuro` | Diseño de Sistemas y Escalabilidad.      |
-| **Frontend** | 🔷 `Azul Claro`  | UI/UX y Client-side Logic.               |
-| **Backend**  | 🟢 `Verde`       | Lógica de servidor, API y Datos.         |
-| **Core**     | 🟡 `Amarillo`    | Arquitectura base y Estándares.          |
-| **Product**  | 🟠 `Naranja`     | Estrategia, Visión y Reglas de Negocio.  |
-| **DevOps**   | 🔴 `Red-600`     | Automatización, CI/CD e Infraestructura. |
-
----
-
-## Mecánicas Principales
-
-### Niveles de Seniority
-
-El balance del juego escala orgánicamente a través de rangos de seniority, afectando directamente la curva de coste y beneficio:
-
-- **Junior**: Unidades base de despliegue rápido, bajo coste de energía y output moderado.
-- **Mid**: Balance óptimo entre coste de recursos y rendimiento en el tablero.
-- **Senior**: Unidades con habilidades especiales disruptivas que alteran las reglas del entorno (por ejemplo, mitigar downtime).
-- **Principal**: Cartas legendarias de alto coste orientadas a definir y sostener la arquitectura del tablero completo.
-
-### Atributos de Carta (`CardStats`)
-
-Cada carta cuenta con tres métricas clave que dictan su valor en el tablero:
-
-1. **Output:** El valor de entrega o daño generado por la unidad al interactuar.
-2. **Uptime (Resilience):** La salud o tolerancia a fallos de la carta antes de ser destruida o removida del entorno.
-3. **Energy:** El costo de infraestructura o recursos requeridos para invocar la carta.
+| Domain       | Visual Identity | Mechanical Specialty & Product Focus                                                       |
+| :----------- | :-------------- | :----------------------------------------------------------------------------------------- |
+| **Quality**  | 🟣 `Purple`     | Testing, QA, and environment stability. Mitigates damage and safeguards Uptime.            |
+| **Systems**  | 🔵 `Dark Blue`  | Systems Design and high-scale scalability. Provides structural resilience.                 |
+| **Frontend** | 🔷 `Light Blue` | UI/UX and client-side logic. Dictates board state manipulation and flow control.           |
+| **Backend**  | 🟢 `Green`      | Server-side logic, APIs, and data lifecycle management. Drives resource generation.        |
+| **Core**     | 🟡 `Yellow`     | Base architecture and engineering standards. Multiplies card synergies across the board.   |
+| **Product**  | 🟠 `Orange`     | Strategy, vision, and core business rules. Alters objectives and victory conditions.       |
+| **DevOps**   | 🔴 `Red-600`    | Automation, CI/CD, and infrastructure. Optimizes Energy costs and accelerates deployments. |
 
 ---
 
-## Arquitectura y Organización del Código
+## Core Game Mechanics
 
-El proyecto implementa los principios de **Clean Architecture**, aislando por completo las reglas de negocio de los detalles de la infraestructura o el framework.
+### Seniority Metrics
 
-- `src/core/` **(Reglas de Negocio):** Es la "fuente de verdad" agnóstica al framework. Contiene las interfaces base (`types.ts`), mappers y los contratos de repositorios (`repository.ts`). Si Next.js fuera reemplazado en el futuro, esta capa permanecería intacta.
+Game balance scales organically through seniority tiers, directly shaping the resource-to-value performance curve:
 
-- `src/infrastructure/` **(Detalles de Implementación):** Implementa los contratos del core. Aquí reside la conexión y consultas a la base de datos SQLite mediante el cliente de LibSQL (`sqlite-repository.ts`).
+- **Junior**: Fast-deployment base units with minimal energy overhead and optimized output footprint.
+- **Mid**: Optimal equilibrium between resource footprint and on-board performance.
+- **Senior**: Disruptive units featuring specialized domain hooks that alter environment conditions (e.g., downtime mitigation).
+- **Principal**: High-cost legendary assets engineered to anchor and sustain entire board-state architectures.
 
-- `src/features/` & `src/components/` **(Capa de Presentación):** Componentes visuales desacoplados y modulares (como `CardDisplay.tsx`) que consumen el estado del juego de forma predictiva.
+### Card Attributes (`CardStats`)
 
-- **`src/app/`**: Sistema de rutas y layouts optimizado para Next.js 16.
-- **`src/app/api/`**: Endpoints backend para el manejo del juego, las cartas y el script de inicialización (`seed/route.ts`).
-- **`src/components/ui-game/`**: Componentes visuales de alto impacto como `CardDisplay.tsx`.
+Every card token exposes three runtime metrics that dictate its tactical value on the board:
+
+1. **Output:** The absolute delivery throughput or performance damage generated during interactions.
+2. **Uptime (Resilience):** Fault tolerance and system health threshold before a card drops or gets pruned from the cluster.
+3. **Energy:** Infrastructure overhead and operational resources required to spin up and commit the asset.
 
 ---
 
-## Inicialización del Entorno Local
+## Architectural Patterns & Codebase Layout
 
-### Requisitos Previos
+The platform relies strictly on **Clean Architecture** patterns, achieving absolute decoupling between core business requirements, external infrastructure dependencies, and the UI framework layer.
 
-Configurar las variables de entorno creando un archivo `.env` en la raíz del proyecto basándose en las necesidades de su infraestructura:
+- `src/core/` **(Enterprise Business Rules):** The framework-agnostic "source of truth." It encapsulates core domain interfaces (`types.ts`), data mappers, and repository abstractions (`repository.ts`). If the underlying web framework (Next.js) were to be swapped or deprecated, this boundary layer remains completely untouched.
+
+- `src/infrastructure/` **(Implementation Details):** Implements the contracts defined by the core layer. This is where the local SQLite persistence engine lives, managed via the LibSQL client driver (`sqlite-repository.ts`).
+
+- `src/features/` & `src/components/` **(Presentation Boundary):** Highly decoupled, modular UI units (such as `CardDisplay.tsx`) that handle visual state mechanics and ingest the game engine status predictably.
+
+- **`src/app/`**: Unified routing and structural layout matrix optimized for Next.js 16.
+- **`src/app/api/`**: Serverless backend endpoints managing runtime game sessions, card states, and the idempotency seeding routine (`seed/route.ts`).
+- **`src/components/ui-game/`**: High-fidelity visual components engineered for complex board-state interactions (e.g., `CardDisplay.tsx`).
+
+---
+
+## Environment Setup & Local Provisioning
+
+### Prerequisites & Configuration
+
+Initialize your environment variables by instantiating a `.env` file at the project root. Configure your network topology and database path according to your infrastructure requirements:
 
 ```env
-PORT=3000
+PORT=your_configured_port
+NEXT_PUBLIC_APP_URL=http://localhost:${PORT}
 DATABASE_URL=file:local.db
 ```
 
-1.  **Instalar dependencias:** `npm install`
-2.  **Ejecución del entorno de desarrollo:** `npm run dev`
-3.  **Aprovisionamiento de Datos (Seeding):**
+1.  **Package Installation: Initialize and pull locked workspace dependencies:** `npm install`
+2.  **Spin Up Development Server: Boot up the local runtime compilation server:** `npm run dev`
+3.  **Database Schema Hydration (Idempotent Seeding):**
 
-- Para poblar la base de datos local SQLite con el set inicial de cartas balanceadas y dominios, el proyecto expone un endpoint seguro de inicialización. Ejecute un trigger HTTP (GET) mediante su cliente de preferencia o navegador utilizando el puerto parametrizado:
+- The application leverages a local SQLite instance (`local.db`) initialized on the fly. To scaffold the relational schema and populate it with the baseline balanced engineering domain dataset, execute a targeted HTTP `GET` request using your preferred API client or browser instance:
 
 ```bash
-GET http://localhost:${PORT}/api/seed
+GET ${NEXT_PUBLIC_APP_URL}/api/seed
 ```
 
-Esto creará las tablas necesarias e insertará el set inicial de cartas de los Dominios de Ingeniería.
+This operation automates data layout creation and executes bulk transactional inserts for the initial Engineering Domain card catalog.
 
-4.  **Acceder a la aplicación:** `http://localhost:${PORT}`
+4.  **Application Runtime Verification:**
 
-Una vez inicializada la base de datos, la aplicación interactuará en tiempo real con el almacenamiento local desde:
+Once the storage layer is fully hydrated, the reactive frontend grid interfaces natively with real-time server-side state. Access the deployed client at:
+
+```bash
+${NEXT_PUBLIC_APP_URL}
+```
