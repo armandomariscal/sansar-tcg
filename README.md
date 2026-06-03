@@ -14,43 +14,14 @@ Un juego de cartas coleccionables (TCG) donde los elementos tradicionales son re
 ![Execution Mode](<https://img.shields.io/badge/Rendering-Dynamic_SSR_(%C6%92)-FF4F00>)
 ![Quality](https://img.shields.io/badge/Code_Quality-ESLint-4B32C3?logo=eslint&logoColor=white)
 
-```bash
-.
-├── eslint.config.mjs
-├── next.config.ts
-├── next-env.d.ts
-├── package.json
-├── package-lock.json
-├── postcss.config.mjs
-├── public
-│   ├── file.svg
-│   ├── globe.svg
-│   ├── next.svg
-│   ├── vercel.svg
-│   └── window.svg
-├── README.md
-├── src
-│   ├── app
-│   │   ├── favicon.ico
-│   │   ├── globals.css
-│   │   ├── layout.tsx
-│   │   └── page.tsx
-│   ├── components
-│   │   └── ui-game
-│   │       └── CardDisplay.tsx
-│   ├── core
-│   │   └── types.ts
-│   └── features
-│       └── landing
-│           └── mock-cards.ts
-└── tsconfig.json
-```
+* **Next.js (Dynamic SSR):** Renderizado híbrido optimizado. Se utiliza SSR dinámico para garantizar que el estado del tablero, las cartas del usuario y la persistencia en la base de datos se sincronicen en tiempo real sin desajustes de hidratación.
+* **React y Tailwind CSS:** UI declarativa y componentes de alto impacto visual con transiciones fluidas para emular la experiencia física de un juego de cartas de mesa.
+* **TypeScript (Strict Mode):** Tipado ultra-estricto para las mecánicas del juego, asegurando que los flujos de daño, coste de energía y estados de las cartas sean validados en tiempo de compilación.
+* **SQLite (@libsql/client):** Base de datos embebida y ligera para gestionar el inventario, perfiles de jugador y sets de cartas de forma local, simulando un entorno productivo sin sobrecarga de infraestructura.
 
----
+### Dominios del Juego (Roles)
 
-## Dominios del Juego (Roles)
-
-El juego se divide en **7 Dominios principales**, cada uno con una identidad visual y rol mecánico específico:
+El set de cartas se segmenta en **7 Dominios principales**, cada uno con una identidad visual única y una especialidad mecánica orientada al producto:
 
 | Dominio      | Identidad Visual | Especialidad                             |
 | :----------- | :--------------- | :--------------------------------------- |
@@ -68,51 +39,62 @@ El juego se divide en **7 Dominios principales**, cada uno con una identidad vis
 
 ### Niveles de Seniority
 
-Las cartas escalan su poder y complejidad según su rango:
+El balance del juego escala orgánicamente a través de rangos de seniority, afectando directamente la curva de coste y beneficio:
 
-- **Junior**: Unidades base de despliegue rápido.
-- **Mid**: Balance entre costo de energía y output.
-- **Senior**: Unidades con habilidades especiales disruptivas.
-- **Principal**: Cartas legendarias que definen la arquitectura del tablero.
+- **Junior**: Unidades base de despliegue rápido, bajo coste de energía y output moderado.
+- **Mid**: Balance óptimo entre coste de recursos y rendimiento en el tablero.
+- **Senior**: Unidades con habilidades especiales disruptivas que alteran las reglas del entorno (por ejemplo, mitigar downtime).
+- **Principal**: Cartas legendarias de alto coste orientadas a definir y sostener la arquitectura del tablero completo.
 
 ### Atributos de Carta (`CardStats`)
 
-1.  **Output:** El valor de entrega o daño generado por la unidad.
-2.  **Uptime (Resilience):** La salud o capacidad de mantenerse activo.
-3.  **Energy:** El costo de recursos necesarios para invocar la carta.
+Cada carta cuenta con tres métricas clave que dictan su valor en el tablero:
+
+1. **Output:** El valor de entrega o daño generado por la unidad al interactuar.
+2. **Uptime (Resilience):** La salud o tolerancia a fallos de la carta antes de ser destruida o removida del entorno.
+3. **Energy:** El costo de infraestructura o recursos requeridos para invocar la carta.
 
 ---
 
-## Organización del Código
+## Arquitectura y Organización del Código
 
-El proyecto sigue una estructura limpia para separar la lógica de negocio de la interfaz:
+El proyecto implementa los principios de **Clean Architecture**, aislando por completo las reglas de negocio de los detalles de la infraestructura o el framework.
+
+- `src/core/` **(Reglas de Negocio):** Es la "fuente de verdad" agnóstica al framework. Contiene las interfaces base (`types.ts`), mappers y los contratos de repositorios (`repository.ts`). Si Next.js fuera reemplazado en el futuro, esta capa permanecería intacta.
+
+- `src/infrastructure/` **(Detalles de Implementación):** Implementa los contratos del core. Aquí reside la conexión y consultas a la base de datos SQLite mediante el cliente de LibSQL (`sqlite-repository.ts`).
+
+- `src/features/` & `src/components/` **(Capa de Presentación):** Componentes visuales desacoplados y modulares (como `CardDisplay.tsx`) que consumen el estado del juego de forma predictiva.
 
 - **`src/app/`**: Sistema de rutas y layouts optimizado para Next.js 16.
 - **`src/app/api/`**: Endpoints backend para el manejo del juego, las cartas y el script de inicialización (`seed/route.ts`).
-- **`src/core/`**: Contiene la lógica de negocio pura, interfaces (`types.ts`), contratos de repositorio (`repository.ts`) y mappers.
-- **`src/core/types.ts`**: La "fuente de verdad". Contiene los Enums de Dominios, Seniority e Interfaces de juego.
 - **`src/components/ui-game/`**: Componentes visuales de alto impacto como `CardDisplay.tsx`.
-- **`src/features/landing/`**: Lógica de presentación y datos mock para testing de interfaz.
-- **`src/infrastructure/`**: Implementación de tecnologías externas. Aquí se gestiona la conexión a SQLite con `@libsql/client` (`sqlite-repository.ts`).
 
 ---
 
-## Guía de Desarrollo
+## Inicialización del Entorno Local
 
-Para iniciar el entorno de desarrollo local:
+### Requisitos Previos
+
+Configurar las variables de entorno creando un archivo `.env` en la raíz del proyecto basándose en las necesidades de su infraestructura:
+
+```env
+PORT=3000
+DATABASE_URL=file:local.db
+```
 
 1.  **Instalar dependencias:** `npm install`
-2.  **Correr servidor:** `npm run dev`
-3.  **Inicializar y Poblar la Base de Datos** (Seed):
+2.  **Ejecución del entorno de desarrollo:** `npm run dev`
+3.  **Aprovisionamiento de Datos (Seeding):**
 
-- Al usar SQLite local (local.db), la base de datos se crea automáticamente, pero estará vacía. Debes ejecutar el script de inicialización visitando la siguiente ruta en tu navegador o cliente HTTP (Postman/Thunder Client):
+- Para poblar la base de datos local SQLite con el set inicial de cartas balanceadas y dominios, el proyecto expone un endpoint seguro de inicialización. Ejecute un trigger HTTP (GET) mediante su cliente de preferencia o navegador utilizando el puerto parametrizado:
 
 ```bash
-http://localhost:3000/api/seed
+GET http://localhost:${PORT}/api/seed
 ```
 
 Esto creará las tablas necesarias e insertará el set inicial de cartas de los Dominios de Ingeniería.
 
-4.  **Acceder a la aplicación:** `http://localhost:3000`
+4.  **Acceder a la aplicación:** `http://localhost:${PORT}`
 
-- Abre http://localhost:3000 en tu navegador para ver la grilla del juego interactuando con los datos reales de la DB.
+Una vez inicializada la base de datos, la aplicación interactuará en tiempo real con el almacenamiento local desde:
