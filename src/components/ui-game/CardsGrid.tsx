@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import { useState } from 'react';
-import { CardDisplay } from '@/components/ui-game/CardDisplay';
-import { Card } from '@/core/types';
+import { useState } from "react";
+import { CardDisplay } from "@/components/ui-game/CardDisplay";
+import { Card } from "@/core/types";
 
 export function CardsGrid({ cards }: { cards: Card[] }) {
   const [open, setOpen] = useState(false);
@@ -24,18 +24,11 @@ export function CardsGrid({ cards }: { cards: Card[] }) {
             <button
               key={`empty-${index}`}
               onClick={() => setOpen(true)}
-              className="
-                w-60 h-[340px]
-                border-2 border-dashed border-neutral-600
-                rounded-2xl
-                flex items-center justify-center
-                text-neutral-500
-                cursor-pointer
-                hover:border-neutral-400"
+              className="w-60 h-[340px] border-2 border-dashed border-neutral-600 rounded-2xl flex items-center justify-center text-neutral-500 cursor-pointer hover:border-neutral-400"
             >
               <span className="text-4xl font-bold">+</span>
             </button>
-          )
+          ),
         )}
       </div>
 
@@ -43,17 +36,14 @@ export function CardsGrid({ cards }: { cards: Card[] }) {
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center">
           <div className="bg-white text-black p-6 rounded-xl w-[400px]">
             <h2 className="font-bold mb-4">Create Card</h2>
-                        <form
+            <form
               onSubmit={(e) => {
                 e.preventDefault();
                 setOpen(false);
               }}
               className="flex flex-col gap-3"
             >
-              <input
-                className="border p-2 rounded"
-                placeholder="Title"
-              />
+              <input className="border p-2 rounded" placeholder="Title" />
 
               <input
                 className="border p-2 rounded"

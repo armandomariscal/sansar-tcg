@@ -1,6 +1,7 @@
-import { Domain } from './types';
-import { domainToSlug } from './domain-mapper';
+import { Domain } from "./types";
+import { domainToSlug } from "./domain-mapper";
 
 export const routes = {
-    domain: (domain: Domain) => `/domain/${domainToSlug(domain)}`,
+  home: "/",
+  domain: (domain: Domain) => `/domain/${domainToSlug(domain)}`,
 };
